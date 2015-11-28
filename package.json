@@ -2,9 +2,15 @@
   "name": "lightfly",
   "version": "0.1.0",
   "private": "true",
+  "author": {
+    "name": "Eric Mann",
+    "email": "eric@eamann.com",
+    "url": "https://eamann.com"
+  },
   "scripts": {
     "start": "node app.js"
   },
+  "main": "app.js",
   "dependencies": {
     "body-parser": "^1.14.1",
     "dotenv": "^1.2.0",
