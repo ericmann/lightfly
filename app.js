@@ -44,11 +44,11 @@ router.use( function( req, res, next ) {
 	next();
 } );
 
-router.get( '/', function( req, res ) {
+router.get( '/r0b0t', function( req, res ) {
 	res.sendFile( path + 'index.html' );
 } );
 
-router.post( '/control', function( req, res ) {
+router.post( '/e11i0t', function( req, res ) {
 	var action = req.body.action;
 
 	var controller = new Promise( function( fulfill, reject ) {
@@ -94,6 +94,6 @@ app.use( '*', function( req,res ) {
 	res.sendFile( path + '404.html' );
 } );
 
-app.listen( 3000, function() {
-	console.log( 'Live at Port 3000' );
+app.listen( 80, function() {
+	console.log( 'LightFly is listening ...' );
 } );
