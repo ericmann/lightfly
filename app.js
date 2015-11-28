@@ -7,12 +7,15 @@
 /**
  * Module dependencies
  */
-var express = require( 'express' );
+var express = require( 'express' ),
+	parser = require( 'body-parser');
 
 /**
  * General application
  */
 var app = express();
+app.use( parser.json() );
+app.use( parser.urlencoded( { extended: true } ) );
 
 /**
  * Module variables
@@ -30,6 +33,10 @@ router.use( function( req, res, next ) {
 
 router.get( '/', function( req, res ) {
 	res.sendFile( path + 'index.html' );
+} );
+
+router.post( '/control', function( req, res ) {
+	var action = req.body.action;
 } );
 
 app.use( '/lib', express.static( __dirname + '/bower_components' ) );
