@@ -11,6 +11,9 @@ var express = require( 'express' ),
 	parser = require( 'body-parser' ),
 	Sparky = require( 'sparky' );
 
+// Load environment
+require( 'dotenv' ).load();
+
 /**
  * General application
  */
@@ -48,32 +51,39 @@ router.get( '/', function( req, res ) {
 router.post( '/control', function( req, res ) {
 	var action = req.body.action;
 
-	switch( action ) {
-		case 'on':
-			if ( 'off' !== state ) {
-				console.log( 'lights already on!' );
-			} else {
+	var controller = new Promise( function( fulfill, reject ) {
+		switch( action ) {
+			case 'on':
+				if ( 'off' !== state ) {
+				console.log( 'I think the lights are already on!' );
+				}
+
 				// Turn 'em on!
-				minibug.digitalWrite( 'D0', 'HIGH' );
-				minibug.digitalWrite( 'D7', 'HIGH' );
+				minibug.run( 'led', 'on', function() {
+					state = 'on';
+					fulfill();
+				} );
+				break;
+			case 'off':
+				if ( 'on' !== state ) {
+					console.log( 'I think the lights are already off!' );
+				}
 
-				state = 'on';
-			}
-			break;
-		case 'off':
-			if ( 'on' !== state ) {
-				console.log( 'lights already off!' );
-			} else {
 				// Turn 'em off!
-				minibug.digitalWrite( 'D0', 'LOW' );
-				minibug.digitalWrite( 'D7', 'LOW' );
+				minibug.run( 'led', 'off', function() {
+					state = 'off';
+					fulfill();
+				} );
+				break;
+			default:
+				console.log( 'invalid command' );
+				fulfill();
+		}
+	} );
 
-				state = 'off';
-			}
-			break;
-		default:
-			console.log( 'invalid command' );
-	}
+	controller.then( function() {
+		res.sendStatus( 200 );
+	} );
 } );
 
 app.use( '/lib', express.static( __dirname + '/bower_components' ) );
