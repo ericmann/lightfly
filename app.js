@@ -94,6 +94,11 @@ app.use( '*', function( req,res ) {
 	res.sendFile( path + '404.html' );
 } );
 
-app.listen( 80, function() {
+/**
+ * Get the default port from an environment varialbe
+ */
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+
+app.listen( port, function() {
 	console.log( 'LightFly is listening ...' );
 } );
