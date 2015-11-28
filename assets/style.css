@@ -1,0 +1,38 @@
+body {
+	color: #f7f5fa;
+	background-color: #1d1d1d;
+}
+
+#controls {
+	margin-top: 50%;
+	text-align: center;
+}
+
+#controls button {
+	color: #1d1d1d;
+	margin-top: 2em;
+	margin-bottom: 2em;
+}
+
+.footer {
+	text-align: center;
+}
+
+#snowflakeContainer {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+.snowflake {
+	padding-left: 15px;
+	font-family: Cambria, Georgia, serif;
+	font-size: 14px;
+	line-height: 24px;
+	position: fixed;
+	color: #FFFFFF;
+	user-select: none;
+	z-index: 1000;
+}
+.snowflake:hover {
+	cursor: default;
+}
