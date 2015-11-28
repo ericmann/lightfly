@@ -8,7 +8,8 @@
  * Module dependencies
  */
 var express = require( 'express' ),
-	parser = require( 'body-parser');
+	parser = require( 'body-parser' ),
+	Sparky = require( 'sparky' );
 
 /**
  * General application
@@ -18,10 +19,19 @@ app.use( parser.json() );
 app.use( parser.urlencoded( { extended: true } ) );
 
 /**
+ * Particle setup
+ */
+var minibug = new Sparky( {
+	deviceId: process.env.DEVICE_ID,
+	token: process.env.DEVICE_TOKEN
+} );
+
+/**
  * Module variables
  */
 var router = express.Router(),
-	path = __dirname + '/views/';
+	path = __dirname + '/views/',
+	state = 'off';
 
 /**
  * Configure Routes
@@ -37,6 +47,33 @@ router.get( '/', function( req, res ) {
 
 router.post( '/control', function( req, res ) {
 	var action = req.body.action;
+
+	switch( action ) {
+		case 'on':
+			if ( 'off' !== state ) {
+				console.log( 'lights already on!' );
+			} else {
+				// Turn 'em on!
+				minibug.digitalWrite( 'D0', 'HIGH' );
+				minibug.digitalWrite( 'D7', 'HIGH' );
+
+				state = 'on';
+			}
+			break;
+		case 'off':
+			if ( 'on' !== state ) {
+				console.log( 'lights already off!' );
+			} else {
+				// Turn 'em off!
+				minibug.digitalWrite( 'D0', 'LOW' );
+				minibug.digitalWrite( 'D7', 'LOW' );
+
+				state = 'off';
+			}
+			break;
+		default:
+			console.log( 'invalid command' );
+	}
 } );
 
 app.use( '/lib', express.static( __dirname + '/bower_components' ) );
